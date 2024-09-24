@@ -125,7 +125,7 @@ export function HotelCard({
                     <img
                         src={imgSrc}
                         alt="hotel cover"
-                        className="w-[450px] h-full object-cover"
+                        className="w-[400px] object-cover"
                     />
                 </Link>
 
