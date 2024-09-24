@@ -377,7 +377,7 @@ exports.advancedSearchHotels = async (req, res) => {
             domestic: domestic,
             listFilters: listFilters,
             locale: "en_US",
-            curr: "USD",
+            curr: "VND",
         };
 
         const href = `https://us.trip.com/hotels/list?city=${queryParam.city}&cityName=${queryParam.cityName}&provinceId=${queryParam.provinceId}&countryId=${queryParam.countryId}&districtId=${queryParam.districtId}&checkin=${queryParam.checkin}&checkout=${queryParam.checkout}&barCurr=${queryParam.barCurr}&crn=${queryParam.crn}&adult=${queryParam.adult}&children=${queryParam.children}&searchBoxArg=${queryParam.searchBoxArg}&travelPurpose=${queryParam.travelPurpose}&ctm_ref=${queryParam.ctm_ref}&domestic=${queryParam.domestic}&listFilters=${queryParam.listFilters}&locale=${queryParam.locale}&curr=${queryParam.curr}`;
@@ -406,6 +406,7 @@ exports.advancedSearchHotels = async (req, res) => {
         const hotelName = response.data.hotelList.map(
             (hotel) => hotel.hotelBasicInfo.hotelName
         );
+
         preHotelIds = response.data.hotelList.map(
             (hotel) => hotel.hotelBasicInfo.hotelId
         );
@@ -760,16 +761,21 @@ exports.advancedSearchHotelAgoda = async (req, res) => {
         );
 
         const headers = {
-            "Ag-Language-Locale": "vi-vn",
-            "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
-        };
+            'Ag-Language-Locale': 'vi-vn',
+            'Ag-Page-Type-Id': '103',
+            'Ag-Request-Id': '88acb1ac-1033-4d21-a369-424a4de5f945',
+            'Ag-Retry-Attempt': '0',
+            'Origin': 'https://www.agoda.com',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36 Edg/127.0.0.0'
+        }
 
         const response = await axios.post(
             agodaAdvancedSearchHotelURL,
             payload,
             { headers: headers }
         );
+
+        // console.log(response.data?.data?.citySearch?.properties?.[0]?.pricing?.offers?.[0]?.roomOffers?.[0]?.room?.pricing)
 
         return res
             .status(200)

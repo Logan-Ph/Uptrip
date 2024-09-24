@@ -7,7 +7,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export function AdvancedHotelFilter({filterOptions, listFilter, payload, listSort}){
     return(
         <>
-        <div className='flex-col space-y-6'>
+        <div className='flex-col space-y-6 max-md:px-3'>
             <PriceRange listFilter={listFilter} payload={payload} listSort={listSort}/>
             <hr className='lg:w-3/4'/>
             <AmenitiesFilter amenities={filterOptions?.data?.propertyFacilitiesAndServices} listFilter={listFilter} payload={payload} listSort={listSort}/>
@@ -87,7 +87,7 @@ function PriceRange({listFilter, payload, listSort}) {
 }
 
 function AmenitiesFilter({amenities, listFilter, payload, listSort}){
-    const [showAmenities, setShowAmenities] = useState(true);
+    const [showAmenities, setShowAmenities] = useState(false);
     const navigate = useNavigate();
     const toggleListFilter = (item) => {
         const newListFilter = `${item.filterId.split("|")[0]}~${item.filterId.split("|")[1]}*${item.type}*${item.value}*${item.subType}`;
@@ -135,7 +135,7 @@ function AmenitiesFilter({amenities, listFilter, payload, listSort}){
 }
 
 function ProperStyleFilter({properties, listFilter, payload, listSort}){
-    const [showAmenities, setShowAmenities] = useState(true);
+    const [showAmenities, setShowAmenities] = useState(false);
     const navigate = useNavigate();
 
     const toggleListFilter = (item) => {

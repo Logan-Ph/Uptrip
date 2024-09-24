@@ -124,7 +124,7 @@ const tripQuickSearchURL =
 
 // URL to get initial hotels id from Trip.com
 const tripGetHotelListIdURL =
-	"https://us.trip.com/htls/getHotelList?testab=b5918617310ea782dbde0ffce1b5ebb0e89e92d57cc52c134ee206ecde837ab7&x-traceID=1712307657637.c8behGBonFVG-1714116857771-1342195682";
+	"https://us.trip.com/htls/getHotelList?x-traceID=1712307657637.c8behGBonFVG-1723192492798-1145102888";
 
 // URL to get specific hotels from Trip.com
 const tripAdvancedSearchSpecificHotelURL = "https://us.trip.com/hotels/list";
@@ -181,8 +181,10 @@ const tripClientID = process.env.TRIP_CLIENT_ID;
 
 const tripAdvancedSearchHeaders = () => {
 	return {
-		"User-Agent":
-			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
+		'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36 Edg/127.0.0.0',
+		'Accept': 'application/json',
+		'Accept-Language': 'en-US,en;q=0.9,vi;q=0.8',
+		'Origin': 'https://us.trip.com'
 	};
 };
 
@@ -203,7 +205,6 @@ const tripGetHotelListURLPayload = (
 	href
 ) => {
 	return {
-		guideLogin: "T",
 		search: {
 			preHotelCount: preHotelIds.length,
 			preHotelIds: preHotelIds,
@@ -237,10 +238,6 @@ const tripGetHotelListURLPayload = (
 			crossPromotionId: "",
 			travellingForWork: false
 		},
-		batchRefresh: {
-			batchId: "",
-			batchSeqNo: 0
-		},
 		queryTag: "NORMAL",
 		mapType: "GOOGLE",
 		extends: {
@@ -254,8 +251,8 @@ const tripGetHotelListURLPayload = (
 			ExposeBedInfos: false
 		},
 		head: {
-			platform: "PC",
-			clientId: tripClientID,
+			platform: "H5",
+			clientId: process.env.TRIP_CLIENT_ID, // this one needed to be changed in the file .env
 			bu: "ibu",
 			group: "TRIP",
 			aid: "",
@@ -268,8 +265,15 @@ const tripGetHotelListURLPayload = (
 			locale: "en-US",
 			timeZone: "7",
 			currency: "VND",
-			deviceID: "PC",
+			p: "58169376525",
+			pageID: "10320668590",
+			deviceID: "WAP",
 			clientVersion: "0",
+			frontend: {
+				vid: "1712307657637.c8behGBonFVG",
+				sessionID: "20",
+				pvid: "3"
+			},
 			extension: [
 				{
 					name: "cityId",
@@ -494,7 +498,8 @@ const agodaAdvancedSearchHotelPayload = (
 						hasAPOFilter: false
 					},
 					searchContext: {
-						userId: "5cc7440c-b516-49ca-a22c-f25035b646ee",
+						searchId: "88acb1ac-1033-4d21-a369-424a4de5f945",
+						userId: "8abdc12b-be82-45f0-8c43-9fc79dea80dd",
 						memberId: 0,
 						locale: "vi-vn",
 						cid: 1758161,
@@ -1658,7 +1663,7 @@ const hotelInfoParams = ({ cityId, hotelId, checkin, checkout, adult, child, crn
 }
 
 const hotelAlbumsURL = "https://us.trip.com/restapi/soa2/28820/ctgethotelalbum"
-const hotelAlbumsPayload = ({hotelId}) => {
+const hotelAlbumsPayload = ({ hotelId }) => {
 	return {
 		hotelId: hotelId,
 		head: {
@@ -1683,7 +1688,7 @@ const hotelAlbumsPayload = ({hotelId}) => {
 }
 
 const hotelCommentURL = "https://us.trip.com/restapi/soa2/28820/ctgetHotelComment";
-const hotelCommentPayload = ({hotelId}) => {
+const hotelCommentPayload = ({ hotelId }) => {
 	return {
 		hotelId: hotelId,
 		pageIndex: 1,
