@@ -153,7 +153,7 @@ function AdvancedSearchExperience() {
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedKeyword(keyword);
-        }, 250); // Delay of 1 second
+        }, 50); // Delay of 1 second
 
         return () => {
             clearTimeout(handler);
@@ -252,7 +252,7 @@ function AdvancedSearchFlight() {
         setFromEdit(true)
         const handler = setTimeout(() => {
             setDebouncedKeywordFrom(keywordFrom);
-        }, 250); // Delay of 1 second
+        }, 50); // Delay of 1 second
 
         return () => {
             clearTimeout(handler);
@@ -263,7 +263,7 @@ function AdvancedSearchFlight() {
         setToEdit(true)
         const handler = setTimeout(() => {
             setDebouncedKeywordTo(keywordTo);
-        }, 250); // Delay of 1 second
+        }, 50); // Delay of 1 second
 
         return () => {
             clearTimeout(handler);
@@ -773,7 +773,7 @@ function AdvancedSearchHotel() {
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedKeyword(keyword);
-        }, 250);
+        }, 50);
 
         return () => {
             clearTimeout(handler);
