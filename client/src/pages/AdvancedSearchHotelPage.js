@@ -155,7 +155,7 @@ export default function AdvancedSearchHotelPage() {
 
         <>
             <div className="bg-[#FAFBFC] md:p-10">
-                <section className="mx-auto max-w-8xl px-6 py-6">
+                <section className="mx-auto max-w-8xl md:px-6 md:py-6 max-md:p-2 ">
                     <div className="grid grid-cols-1 lg:grid-cols-3">
                         <div className="relative">
                             <div className="font-bold text-xl mb-4">
@@ -171,8 +171,8 @@ export default function AdvancedSearchHotelPage() {
                         </div>
 
                         <div className="col-span-2">
-                            <div className="flex items-center justify-between">
-                                <div className="w-1/2 mt-10 md:mt-0">
+                            <div className="flex items-center justify-between max-md:mt-5">
+                                <div className="w-1/2 md:mt-0 items-center">
                                     <p className="text-sm md:text-lg">
                                         Showing properties found in{" "}
                                         <span className="font-bold text-sm md:text-lg text-wrap md:text-nowrap text-[#EF4040]">
