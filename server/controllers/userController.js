@@ -334,6 +334,7 @@ exports.advancedSearchHotels = async (req, res) => {
             adult,
             children, // children=3&ages=0,15,4 -> decoded version
             domestic,
+            childrenAges,
             listFilters,
         } = req.body;
 

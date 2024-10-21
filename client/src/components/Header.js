@@ -67,11 +67,10 @@ export default function Header() {
                         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 rounded-tl-lg ${
-                                        tab === "stay"
+                                    className={`inline-block p-4 rounded-tl-lg ${tab === "stay"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("stay")}
                                 >
@@ -80,11 +79,10 @@ export default function Header() {
                             </li>
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 ${
-                                        tab === "flight"
+                                    className={`inline-block p-4 ${tab === "flight"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("flight")}
                                 >
@@ -93,11 +91,10 @@ export default function Header() {
                             </li>
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 rounded-tr-lg ${
-                                        tab === "experience"
+                                    className={`inline-block p-4 rounded-tr-lg ${tab === "experience"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("experience")}
                                 >
@@ -237,12 +234,12 @@ function AdvancedSearchFlight() {
     const [toEdit, setToEdit] = useState(false);
     const [debouncedKeywordFrom, setDebouncedKeywordFrom] = useState(null)
     const [debouncedKeywordTo, setDebouncedKeywordTo] = useState(null)
-    const [startDate, setStartDate] = useState() 
+    const [startDate, setStartDate] = useState()
 
     useEffect(() => {
         if (numberOfAdult * 2 < numberOfChild) {
             setNumberOfChild(numberOfAdult * 2)
-        } 
+        }
         if (numberOfAdult < numberOfInfant) {
             setNumberOfInfant(numberOfAdult)
         }
@@ -294,17 +291,17 @@ function AdvancedSearchFlight() {
             return
         }
 
-        if (!to){
+        if (!to) {
             warningNotify("PLease select your destination")
             return
         }
 
-        if (!startDate){
+        if (!startDate) {
             warningNotify("Please select your departure date")
             return
         }
 
-        if (!toAutocomplete || !fromAutocomplete){
+        if (!toAutocomplete || !fromAutocomplete) {
             return
         }
 
@@ -324,7 +321,7 @@ function AdvancedSearchFlight() {
 
         setKeywordFrom()
         setKeywordTo()
-        
+
         navigate(
             `advanced-flight-search?ori=${payload.fromCity}&des=${payload.toCity}&from=${payload.from}&to=${payload.to}&adult=${payload.adult}&child=${payload.child}&infant=${payload.infant}&seatClass=${payload.seatClass}&year=${payload.year}&month=${payload.month}&day=${payload.day}`
         );
@@ -499,9 +496,8 @@ function AdvancedSearchFlight() {
                             {/* <!-- Dropdown menu --> */}
                             <div
                                 id="dropdown"
-                                className={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute w-full mt-2 ${
-                                    openMenu ? "" : "hidden"
-                                }`}
+                                className={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute w-full mt-2 ${openMenu ? "" : "hidden"
+                                    }`}
                             >
                                 <div
                                     className="py-2 text-sm text-gray-700 my-3 mx-5 space-y-4"
@@ -531,7 +527,7 @@ function AdvancedSearchFlight() {
                                                                     1 +
                                                                     numberOfChild +
                                                                     numberOfInfant <=
-                                                                6
+                                                                    6
                                                                     ? prev + 1
                                                                     : prev
                                                         );
@@ -595,8 +591,8 @@ function AdvancedSearchFlight() {
                                                             (prev) =>
                                                                 prev <
                                                                     numberOfAdult *
-                                                                        2 &&
-                                                                prev +
+                                                                    2 &&
+                                                                    prev +
                                                                     1 +
                                                                     numberOfAdult +
                                                                     numberOfInfant <=
@@ -664,7 +660,7 @@ function AdvancedSearchFlight() {
                                                             (prev) =>
                                                                 prev + 1 <=
                                                                     numberOfAdult &&
-                                                                prev +
+                                                                    prev +
                                                                     1 +
                                                                     numberOfChild +
                                                                     numberOfAdult <=
@@ -712,19 +708,19 @@ function AdvancedSearchFlight() {
                                     </div>
                                     {/* Choose seat class */}
                                     <div class="flex justify-between grow flex-wrap">
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("ECONOMY")}
                                         >
                                             Economy
                                         </div>
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("BUSINESS")}
                                         >
                                             Business
                                         </div>
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("FIRST")}
                                         >
@@ -784,6 +780,21 @@ function AdvancedSearchHotel() {
         setAutocompletePayload(null);
     }, [debouncedKeyword]);
 
+
+    const renderAgesString = (agesArray) => {
+        if (agesArray.length === 0) return ''; // Return an empty string if the array is empty
+
+        let agesString = '';
+        agesArray.forEach((age, index) => {
+            agesString += age;
+            if (index < agesArray.length - 1) {
+                agesString += ','; // Add a comma if it's not the last element
+            }
+        });
+
+        return agesString;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -792,12 +803,12 @@ function AdvancedSearchHotel() {
             return;
         }
 
-        if (!checkin){
+        if (!checkin) {
             warningNotify("Please select checkin date")
             return
         }
 
-        if (!checkout){
+        if (!checkout) {
             warningNotify("Please select checkout date")
             return
         }
@@ -823,6 +834,7 @@ function AdvancedSearchHotel() {
             crn: numberOfRooms,
             adult: numberOfAdults,
             children: numberOfChildren,
+            ages: childrenAges,
             domestic: false,
             listFilters: "17~1*17*1*2",
         };
@@ -836,7 +848,7 @@ function AdvancedSearchHotel() {
                 preHotelIds: autocompletePayload.code
             }
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         } else {
             payload = {
@@ -844,9 +856,10 @@ function AdvancedSearchHotel() {
                 cityName: autocompletePayload.resultWord,
             };
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         }
+        setDropdown(false)
     };
 
     return (
@@ -1117,9 +1130,8 @@ function AdvancedSearchHotel() {
                         {/* <!-- Dropdown menu --> */}
                         <div
                             id="dropdownDivider"
-                            class={`z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow ${
-                                dropdown ? "" : "hidden"
-                            }`}
+                            class={`z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow ${dropdown ? "" : "hidden"
+                                }`}
                         >
                             {/* Ask user to input room information */}
                             <div
@@ -1216,7 +1228,7 @@ function AdvancedSearchHotel() {
                                                 onClick={() =>
                                                     setNumberOfAdults((prev) =>
                                                         prev - 1 > 0 &&
-                                                        prev > numberOfRooms
+                                                            prev > numberOfRooms
                                                             ? prev - 1
                                                             : prev
                                                     )
@@ -1286,7 +1298,7 @@ function AdvancedSearchHotel() {
                                                                         prev.slice(
                                                                             0,
                                                                             prev.length -
-                                                                                1
+                                                                            1
                                                                         )
                                                                 );
                                                                 return prev - 1;
@@ -1319,7 +1331,7 @@ function AdvancedSearchHotel() {
                                                     setNumberOfChildren(
                                                         (prev) =>
                                                             prev <
-                                                            numberOfRooms * 6
+                                                                numberOfRooms * 6
                                                                 ? prev + 1
                                                                 : prev
                                                     )

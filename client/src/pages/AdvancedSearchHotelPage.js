@@ -58,6 +58,7 @@ export default function AdvancedSearchHotelPage() {
         crn: searchParams.get("crn"),
         adult: searchParams.get("adult"),
         children: searchParams.get("children"),
+        ages: searchParams.get("ages"),
         domestic: searchParams.get("domestic"),
         preHotelIds: searchParams.getAll("preHotelIds"),
         listFilters: `${listSort.current},${listFilter.current}`,
