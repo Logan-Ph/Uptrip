@@ -199,44 +199,197 @@ const tripGetHotelListURLPayload = (
 	districtID,
 	oversea,
 	roomQuantity,
+	ages,
 	lat,
 	lng,
 	listFilters,
 	href
 ) => {
+
+	function formatDate(date) {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}/${month}/${day}`;
+	}
+
+	const today = new Date();
+	const nextDay = new Date(today);
+	nextDay.setDate(today.getDate() + 1);
+
 	return {
+		// search: {
+		// 	sessionId: "124536789423",
+		// 	showDetailDatePicker: false,
+		// 	isChecking: false,
+		// 	preHotelCount: preHotelIds.length,
+		// 	preHotelIds: preHotelIds,
+		// 	today: formatDate(today),
+		// 	nextDay: formatDate(nextDay),
+		// 	checkInAPI: (checkIn) => `${checkIn.slice(0, 4)}-${checkIn.slice(4, 6)}-${checkIn.slice(6, 8)}`,
+		// 	checkOutAPI: (checkOut) => `${checkOut.slice(0, 4)}-${checkOut.slice(4, 6)}-${checkOut.slice(6, 8)}`,
+		// 	checkIn: checkIn, // yyyymmdd
+		// 	checkOut: checkOut, // yyyymmdd
+		// 	isCorrected: false,
+		// 	showDateTip: false,
+		// 	sourceFromTag: "",
+		// 	childInfoItems: ages.split(',').map(age => {
+		// 		return {
+		// 			"age": parseInt(age),
+		// 			"bed": -1,
+		// 			"meal": -1,
+		// 			"type": null
+		// 		}
+		// 	}),
+		// 	// filters: getListFiltersTrip(listFilters),
+		// 	filters: [
+		// 		{
+		// 			"filterId": "29|1",
+		// 			"type": "29",
+		// 			"value": "1|1"
+		// 		},
+		// 		{
+		// 			"filterId": "29|2|5",
+		// 			"type": "29",
+		// 			"value": "2|5"
+		// 		},
+		// 		{
+		// 			"filterId": "29|3|12",
+		// 			"type": "29",
+		// 			"value": "3|12"
+		// 		},
+		// 		{
+		// 			"filterId": "17|1",
+		// 			"type": "17",
+		// 			"value": "1"				
+		// 		},
+		// 		{
+		// 			"filterId": "80|3|0",
+		// 			"type": "80",
+		// 			"value": "3"
+		// 		},
+		// 		{
+		// 			"filterId": "15|Range",
+		// 			"type": "15",
+		// 			"value": "0|11200000",
+		// 			"title": "VND 0 – VND 11,200,000"
+		// 		}
+		// 	],
+		// 	location: {
+		// 		geo: {
+		// 			countryID: countryID,
+		// 			provinceID: provinceID,
+		// 			cityID: cityID,
+		// 			districtID: districtID,
+		// 			oversea: oversea
+		// 		},
+		// 		coordinates: []
+		// 	},
+		// 	pageIndex: Math.max(Math.floor(preHotelIds.length / 2), 1),
+		// 	pageSize: 10,
+		// 	needTagMerge: "T",
+		// 	roomQuantity: roomQuantity,
+		// 	orderFieldSelectedByUser: false,
+		// 	hotelId: 0,
+		// 	hotelIds: [],
+		// 	lat: lat,
+		// 	lng: lng,
+		// 	tripWalkDriveSwitch: "T",
+		// 	resultType: "",
+		// 	nearbyHotHotel: {},
+		// 	recommendTimes: 0,
+		// 	crossPromotionId: "",
+		// 	travellingForWork: false
+		// },;
 		search: {
-			preHotelCount: preHotelIds.length,
-			preHotelIds: preHotelIds,
-			checkIn: checkIn, // yyyymmdd
-			checkOut: checkOut, // yyyymmdd
-			sourceFromTag: "",
-			filters: getListFiltersTrip(listFilters),
-			location: {
-				geo: {
-					countryID: countryID,
-					provinceID: provinceID,
-					cityID: cityID,
-					districtID: districtID,
-					oversea: oversea
+			"sessionId": "249015474096",
+			"showDetailDatePicker": false,
+			"isChecking": false,
+			"checkIn": "20241022",
+			"checkOut": "20241026",
+			"today": "2024/10/22",
+			"nextDay": "2024/10/23",
+			"checkInApi": "2024-10-22",
+			"checkOutApi": "2024-10-26",
+			"isCorrected": false,
+			"showDateTip": false,
+			"pageIndex": 1,
+			"sourceFromTag": "",
+			"pageSize": 10,
+			"orderFieldSelectedByUser": true,
+			"preHotelCount": 0,
+			"isMyPositionSearch": false,
+			"childInfoItems": [
+				{
+					"age": 5,
+					"meal": -1,
+					"bed": -1,
+					"type": null
 				},
-				coordinates: []
+				{
+					"age": 12,
+					"meal": -1,
+					"bed": -1,
+					"type": null
+				}
+			],
+			"roomQuantity": 1,
+			"filters": [
+				{
+					"filterId": "29|1",
+					"type": "29",
+					"value": "1|1"
+				},
+				{
+					"filterId": "29|2|5",
+					"type": "29",
+					"value": "2|5"
+				},
+				{
+					"filterId": "29|3|12",
+					"type": "29",
+					"value": "3|12"
+				},
+				{
+					"filterId": "17|6",
+					"type": "17",
+					"value": "6",
+					"subType": "2",
+					"childValue": "",
+					"parentType": "17"
+				},
+				{
+					"filterId": "80|3|0",
+					"type": "80",
+					"value": "3"
+				},
+				{
+					"filterId": "15|Range",
+					"type": "15",
+					"value": "0|11200000",
+					"title": "VND 0 – VND 11,200,000"
+				}
+			],
+			"location": {
+				"geo": {
+					"cityID": 1777,
+					"countryID": 111,
+					"provinceID": 11120,
+					"oversea": true,
+					"districtID": 0
+				},
+				"coordinates": [
+					{
+						"coordinateType": 1,
+						"latitude": "-1",
+						"longitude": "-1"
+					}
+				]
 			},
-			pageIndex: Math.max(Math.floor(preHotelIds.length / 2), 1),
-			pageSize: 10,
-			needTagMerge: "T",
-			roomQuantity: roomQuantity,
-			orderFieldSelectedByUser: false,
-			hotelId: 0,
-			hotelIds: [],
-			lat: lat,
-			lng: lng,
-			tripWalkDriveSwitch: "T",
-			resultType: "",
-			nearbyHotHotel: {},
-			recommendTimes: 0,
-			crossPromotionId: "",
-			travellingForWork: false
+			"hotelIds": [],
+			"tripWalkDriveSwitch": "T",
+			"needTagMerge": "T",
+			"crossPromotionId": ""
 		},
 		queryTag: "NORMAL",
 		mapType: "GOOGLE",
@@ -252,7 +405,7 @@ const tripGetHotelListURLPayload = (
 		},
 		head: {
 			platform: "H5",
-			clientId: process.env.TRIP_CLIENT_ID, // this one needed to be changed in the file .env
+			clientId: "1712307657637.c8behGBonFVG", // this one needed to be changed in the file .env
 			bu: "ibu",
 			group: "TRIP",
 			aid: "",
@@ -387,11 +540,12 @@ const bookingAdvancedSearchHotelQueryParam = (
 		selected_currency: "VND"
 	};
 
-	if (group_children > 0) {
-		age.forEach(childAge => {
-			params.age = childAge; // Age of each child in the group
-		});
-	}
+	// add this one later 
+	// if (group_children > 0) {
+	// 	age.forEach(childAge => {
+	// 		params.age = childAge; // Age of each child in the group
+	// 	});
+	// }
 
 	return params;
 

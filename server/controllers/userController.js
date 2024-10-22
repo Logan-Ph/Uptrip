@@ -334,9 +334,11 @@ exports.advancedSearchHotels = async (req, res) => {
             adult,
             children, // children=3&ages=0,15,4 -> decoded version
             domestic,
-            childrenAges,
+            ages,
             listFilters,
         } = req.body;
+
+        console.log(ages)
 
         const queryParam = {
             // city: 286,
@@ -367,6 +369,9 @@ exports.advancedSearchHotels = async (req, res) => {
             // crn: 1, // number of rooms
             crn: Number(crn),
 
+            // ages: ages,
+            ages: ages,
+
             // adult: 1,
             adult: Number(adult),
 
@@ -381,7 +386,7 @@ exports.advancedSearchHotels = async (req, res) => {
             curr: "VND",
         };
 
-        const href = `https://us.trip.com/hotels/list?city=${queryParam.city}&cityName=${queryParam.cityName}&provinceId=${queryParam.provinceId}&countryId=${queryParam.countryId}&districtId=${queryParam.districtId}&checkin=${queryParam.checkin}&checkout=${queryParam.checkout}&barCurr=${queryParam.barCurr}&crn=${queryParam.crn}&adult=${queryParam.adult}&children=${queryParam.children}&searchBoxArg=${queryParam.searchBoxArg}&travelPurpose=${queryParam.travelPurpose}&ctm_ref=${queryParam.ctm_ref}&domestic=${queryParam.domestic}&listFilters=${queryParam.listFilters}&locale=${queryParam.locale}&curr=${queryParam.curr}`;
+        const href = `https://us.trip.com/hotels/list?city=${queryParam.city}&cityName=${queryParam.cityName}&provinceId=${queryParam.provinceId}&countryId=${queryParam.countryId}&districtId=${queryParam.districtId}&checkin=${queryParam.checkin}&checkout=${queryParam.checkout}&barCurr=${queryParam.barCurr}&crn=${queryParam.crn}&adult=${queryParam.adult}&children=${queryParam.children}&ages=${queryParam.ages}&searchBoxArg=${queryParam.searchBoxArg}&travelPurpose=${queryParam.travelPurpose}&ctm_ref=${queryParam.ctm_ref}&domestic=${queryParam.domestic}&listFilters=${queryParam.listFilters}&locale=${queryParam.locale}&curr=${queryParam.curr}`;
         if (preHotelIds) preHotelIds = preHotelIds.map(Number);
 
         const payload = tripGetHotelListURLPayload(
@@ -394,11 +399,13 @@ exports.advancedSearchHotels = async (req, res) => {
             queryParam.districtId || 0,
             queryParam.cityType === "OVERSEA" ? true : false,
             queryParam.crn || 1,
+            queryParam.ages,
             queryParam.latitude,
             queryParam.longitude,
             queryParam.listFilters,
             href
         );
+        console.log(payload.listFilters)
 
         const response = await axios.post(tripGetHotelListIdURL, payload, {
             headers: headers,
