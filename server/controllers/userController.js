@@ -338,8 +338,6 @@ exports.advancedSearchHotels = async (req, res) => {
             listFilters,
         } = req.body;
 
-        console.log(ages)
-
         const queryParam = {
             // city: 286,
             city: Number(city),
@@ -405,11 +403,14 @@ exports.advancedSearchHotels = async (req, res) => {
             queryParam.listFilters,
             href
         );
-        console.log(payload.listFilters)
 
         const response = await axios.post(tripGetHotelListIdURL, payload, {
             headers: headers,
         });
+
+        if (response.data.ErrorCode === 400) {
+            return res.status(500).json({ message: response.data.Message });
+        }
 
         const hotelName = response.data.hotelList.map(
             (hotel) => hotel.hotelBasicInfo.hotelName
@@ -425,7 +426,6 @@ exports.advancedSearchHotels = async (req, res) => {
             preHotelIds,
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).json(error);
     }
 };
@@ -635,7 +635,6 @@ exports.priceComparisonHotels = async (req, res) => {
 
         return res.status(200).json(combinedResults);
     } catch (error) {
-        console.log("Error in priceComparisonHotels:", error);
         return res
             .status(500)
             .json({ message: "Internal Server Error", error: error });
@@ -739,7 +738,6 @@ exports.advancedSearchSpecificHotelTrip = async (req, res) => {
         };
         res.status(200).json({ matchHotel });
     } catch (er) {
-        console.log(er)
         return res.status(500).json(error);
     }
 };
@@ -856,7 +854,6 @@ exports.advancedSearchHotelBooking = async (req, res) => {
         const hotel = searchQueriesArray[1]["results"][0]; // select the name by ".displayName.text"
         return res.status(200).json({ price: hotel.blocks, pageName: hotel.basicPropertyData.pageName });
     } catch (error) {
-        console.log(error)
         return res.status(500).json(error);
     }
 };
