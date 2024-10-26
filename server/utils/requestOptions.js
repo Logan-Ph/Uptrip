@@ -207,6 +207,15 @@ const tripGetHotelListURLPayload = (
 	listFilters,
 	href
 ) => {
+	let childInfoItems = ages.split(",").map(age => {
+		return {
+			age: parseInt(age),
+			meal: -1,
+			bed: -1,
+			type: null
+		};
+	});
+
 	return {
 		search: {
 			sessionId: getIDSessionTrip(),
@@ -216,14 +225,7 @@ const tripGetHotelListURLPayload = (
 			checkOut: checkOut, // yyyymmdd
 			sourceFromTag: "",
 			filters: getListFiltersTrip(listFilters),
-			childInfoItems: ages.split(",").map(age => {
-				return {
-					age: parseInt(age),
-					bed: -1,
-					meal: -1,
-					type: null
-				};
-			}),
+			childInfoItems: childInfoItems,
 			location: {
 				geo: {
 					countryID: countryID,

@@ -55,7 +55,7 @@ export function HotelCard({
     const formatDate = dateStr => dateStr.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
     const bookingURL = `https://www.booking.com/hotel/vn/${priceData?.bookingPrice?.pageName}.vi.html?checkin=${formatDate(payload.checkin)};checkout=${formatDate(payload.checkout)};dest_id=${priceData?.booking?.matchHotel?.dest_id};dest_type=${priceData?.booking?.matchHotel?.dest_type};group_adults=${payload.adult};group_children=${payload.children};no_rooms=${payload.crn}`
     const agodaURL = `https://www.agoda.com/vi-vn${priceData?.agodaPrice?.pageName}?finalPriceView=1&isShowMobileAppPrice=false&numberOfBedrooms=&familyMode=false&adults=${payload.adult}&children=${payload.children}&rooms=${payload.crn}&maxRooms=0&checkIn=${formatDate(payload.checkin)}&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&los=${daysBetween(payload.checkin, payload.checkout)}`
-    const tripURL = `https://us.trip.com/hotels/detail/?cityId=${payload.city}&hotelId=${payload?.hotelId || hotel?.hotelBasicInfo?.hotelId}&checkIn=${formatDate(payload.checkin)}&checkOut=${formatDate(payload.checkout)}&adult=${payload.adult}&children=0&subStamp=1479&crn=${payload.crn}&ages=&travelpurpose=0&curr=VND&detailFilters=17%7C1~17~1*80%7C0%7C1~80~0&hotelType=normal&barcurr=VND&locale=en-US`
+    const tripURL = `https://us.trip.com/hotels/detail/?cityId=${payload.city}&hotelId=${payload?.hotelId || hotel?.hotelBasicInfo?.hotelId}&checkIn=${formatDate(payload.checkin)}&checkOut=${formatDate(payload.checkout)}&adult=${payload.adult}&children=${payload.children}&ages=${payload.ages}&subStamp=1479&crn=${payload.crn}&travelpurpose=0&curr=VND&hotelType=normal&barcurr=VND&locale=en-US`
     const websiteLogo = useMemo(() => [
         {
             imgLogo: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Agoda_transparent_logo.png",
@@ -146,7 +146,7 @@ export function HotelCard({
                             <path fill="#FFA732" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg>
                         </div>
                         <div className="border border-[#CDEAE1] px-1 md:px-2 bg-[#CDEAE1]">
-                            <p className="font-bold text-sm md:text-md">{starRating}<span className="text-sm md:text-md font-light">/5</span></p>
+                            <p className="font-bold text-sm md:text-md">{starRating || 5}<span className="text-sm md:text-md font-light">/5</span></p>
                         </div>
                     </div>
                     {/* No rating */}

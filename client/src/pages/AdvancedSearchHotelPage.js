@@ -113,6 +113,8 @@ export default function AdvancedSearchHotelPage() {
         },
     });
 
+    console.log(priceData)
+
     const getSpecificHotelPriceComparison = useQuery({
         queryKey: ["hotel-price-comparison", specificHotel],
         queryFn: () => fetchHotelPriceComparison({ ...payload, hotelNames: [specificHotel.matchHotel.name] }),
