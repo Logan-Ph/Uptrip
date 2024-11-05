@@ -3,7 +3,7 @@ import NavBar from "./Navbar";
 import useHandleNavigate from "../utils/useHandleNavigate";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAttractionsAutocomplete, fetchTripAutoComplete, fetchFlightAutocomplete } from "../api/fetch";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import warningNotify from "../utils/warningNotify";
 
 export default function Header() {
@@ -748,16 +748,17 @@ function AdvancedSearchFlight() {
 
 function AdvancedSearchHotel() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [keyword, setKeyword] = useState("");
     const [autocompletePayload, setAutocompletePayload] = useState();
     const [dropdown, setDropdown] = useState(false);
-    const [numberOfAdults, setNumberOfAdults] = useState(1);
-    const [numberOfChildren, setNumberOfChildren] = useState(0);
-    const [numberOfRooms, setNumberOfRooms] = useState(1);
-    const [childrenAges, setChildrenAges] = useState([]);
+    const [numberOfAdults, setNumberOfAdults] = useState(Number(searchParams.get("adult")) || 1);
+    const [numberOfChildren, setNumberOfChildren] = useState(Number(searchParams.get("children")) || 0);
+    const [numberOfRooms, setNumberOfRooms] = useState(Number(searchParams.get("crn")) || 1);
+    const [childrenAges, setChildrenAges] = useState(searchParams.get("ages")?.split(",") || []);
     const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
-    const [checkin, setCheckin] = useState()
-    const [checkout, setCheckout] = useState()
+    const [checkin, setCheckin] = useState(searchParams.get("checkin")?.slice(0, 4) + "-" + searchParams.get("checkin")?.slice(4, 6) + "-" + searchParams.get("checkin")?.slice(6));
+    const [checkout, setCheckout] = useState(searchParams.get("checkout")?.slice(0, 4) + "-" + searchParams.get("checkout")?.slice(4, 6) + "-" + searchParams.get("checkout")?.slice(6));
 
     const { data, isFetched } = useQuery({
         queryKey: ["quick-search", "hotels", debouncedKeyword],
@@ -798,45 +799,45 @@ function AdvancedSearchHotel() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!autocompletePayload) {
+        if (!autocompletePayload && searchParams.get("resultType") === null) {
             warningNotify("Please select a location");
             return;
         }
 
-        if (!checkin) {
+        if (!checkin && searchParams.get("checkin") === null) {
             warningNotify("Please select checkin date")
             return
         }
 
-        if (!checkout) {
+        if (!checkout && searchParams.get("checkout") === null) {
             warningNotify("Please select checkout date")
             return
         }
 
         let payload = {
-            checkin: checkin.replace(/-/g, ''),
+            checkin: checkin.replace(/-/g, '') ,
             checkout: checkout.replace(/-/g, ''),
-            city: autocompletePayload.city.geoCode,
+            city: autocompletePayload.city.geoCode || searchParams.get("city"),
 
-            resultType: autocompletePayload.resultType,
-            countryId: autocompletePayload.country.geoCode,
-            districtId: 0,
-            provinceId: autocompletePayload.province.geoCode,
-            cityType: autocompletePayload.cityType,
-            latitude: autocompletePayload.coordinateInfos[3].latitude,
-            longitude: autocompletePayload.coordinateInfos[3].longitude,
+            resultType: autocompletePayload.resultType || searchParams.get("resultType"),
+            countryId: autocompletePayload.country.geoCode || searchParams.get("countryId"),
+            districtId: 0 || searchParams.get("districtId"),
+            provinceId: autocompletePayload.province.geoCode || searchParams.get("provinceId"),
+            cityType: autocompletePayload.cityType || searchParams.get("cityType"),
+            latitude: autocompletePayload.coordinateInfos[3].latitude || searchParams.get("latitude"),
+            longitude: autocompletePayload.coordinateInfos[3].longitude || searchParams.get("longitude"),
             searchCoordinate: autocompletePayload.coordinateInfos
                 .map(
                     (info) =>
                         `${info.coordinateType}_${info.latitude}_${info.longitude}_${info.accuracy}`
                 )
-                .join("|"),
-            crn: numberOfRooms,
-            adult: numberOfAdults,
-            children: numberOfChildren,
-            ages: childrenAges,
-            domestic: false,
-            listFilters: "17~1*17*1*2",
+                .join("|") || searchParams.get("searchCoordinate"),
+            crn: numberOfRooms || searchParams.get("crn"),
+            adult: numberOfAdults || searchParams.get("adult"),
+            children: numberOfChildren || searchParams.get("children"),
+            ages: childrenAges || searchParams.get("ages"),
+            domestic: false || searchParams.get("domestic"),
+            listFilters: "17~1*17*1*2" || searchParams.get("listFilters"),
         };
 
         if (payload.resultType === "H") {
@@ -879,6 +880,7 @@ function AdvancedSearchHotel() {
                             className="h-[52px] w-full input  bg-white border md:border-none border-gray-300 ps-10 p-2.5 focus:ring-0 focus:ring-offset-0 focus:border-gray-300 focus:outline-none"
                             placeholder="Where are you going?"
                             value={autocompletePayload?.resultWord}
+                            defaultValue={searchParams.get("resultType") !== "H" ? searchParams.get("cityName") : searchParams.get("hotelName")}
                             onChange={(e) => setKeyword(e.target.value)}
                         />
                         <div className="relative z-40 drop-shadow-lg">
