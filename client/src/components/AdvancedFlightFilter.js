@@ -33,6 +33,12 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        console.log('run')
+        //setPriceFilter(newValue);
+    };
+
+    const toggleFilter = (event, newValue) => {
+        console.log('running');
         setPriceFilter(newValue);
     };
 
@@ -58,7 +64,8 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
                     <Slider
                         getAriaLabel={() => 'Price range'}
                         value={value}
-                        onChangeCommitted={handleChange}
+                        onChange={handleChange}
+                        onChangeCommitted={toggleFilter}
                         valueLabelDisplay="auto"
                         valueLabelFormat={valueLabelFormat}
                         min={0}
