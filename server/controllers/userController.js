@@ -1365,7 +1365,7 @@ exports.hotelInfo = async (req, res) => {
         const response = await axios.get(hotelInfoURL, { params: payload, headers: headers })
         const html = response.data;
         const $ = cheerio.load(html);
-        const hotelDescription = $(".hotelOverview_hotelOverview-container__XwS4Z").text();
+        const hotelDescription = $(".hotelOverview_hotelOverview-container__XwS4Z").html();
         const ldJsonScript = $('script[type="application/ld+json"]');
         const hotelReviewScore = $(
             ".reviewScores_reviewCategoryScores-itemHead__4HXHu"
@@ -1382,7 +1382,8 @@ exports.hotelInfo = async (req, res) => {
             ratingsMap[key] = value;
         });
         const hotelInfo = JSON.parse(ldJsonScript.html());
-        return res.status(200).json({ hotelInfo, hotelDescription, ratingsMap, hotelReviewComment })
+        const hotelAddress = $(".headInit_headInit-address_text__D_Atv").text();
+        return res.status(200).json({ hotelInfo, hotelDescription, ratingsMap, hotelReviewComment, hotelAddress })
     } catch (err) {
         console.log(err)
         return res.status(500).json(err)

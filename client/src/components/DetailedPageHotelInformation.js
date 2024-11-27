@@ -8,11 +8,10 @@ import { useState, useEffect } from "react";
 export default function DetailedPageHotelInformation({ nearByHotels, hotelInfo, hotelComments, specificHotel, specificHotelPriceComparison, payload, isFetchingHotelComments, isFetchingNearByHotels }) {
     return (
         <>
-            
             {hotelInfo ? 
                 <div className="border-transparent bg-white border-2 p-4 rounded-lg space-y-2 shadow-md">
                     <div className="flex flex-col space-y-2 lg:flex-row md:items-center lg:space-x-4 mb-2">
-                        <p className="font-extrabold text-2xl">{hotelInfo?.hotelInfo?.name}</p>
+                        <p className="font-extrabold text-2xl">{hotelInfo?.hotelInfo?.name || specificHotel?.matchHotel?.name}</p>
 
                         <div class="flex flex-row items-center space-x-2">
                             <div className="flex items-center space-x-1">
@@ -21,11 +20,10 @@ export default function DetailedPageHotelInformation({ nearByHotels, hotelInfo, 
                                         <path fill="#FFA732" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" /></svg>
                                 </div>
                                 <div className="border border-[#CDEAE1] px-1 md:px-2 bg-[#CDEAE1]">
-                                    <p className="font-bold text-sm md:text-md">{hotelInfo?.hotelInfo?.aggregateRating?.ratingValue}<span className="text-sm md:text-md font-light">/5</span></p>
+                                    <p className="font-bold text-sm md:text-md">{hotelInfo?.hotelInfo?.aggregateRating?.ratingValue || specificHotel?.matchHotel?.reviewScore?.split("/")[0]}<span className="text-sm md:text-md font-light">/5</span></p>
                                 </div>
                             </div>
-                            <p className="font-bold text-sm md:text-md">{hotelInfo?.hotelReviewComment}</p>
-                            <p>{hotelInfo?.hotelInfo?.aggregateRating?.reviewCount} reviews</p>
+                            <p className="font-bold text-sm md:text-md">{hotelInfo?.hotelReviewComment || specificHotel?.matchHotel?.reviewCounts?.split(" ")[0]} reviews</p>
                         </div>
                     </div>
 
@@ -44,7 +42,7 @@ export default function DetailedPageHotelInformation({ nearByHotels, hotelInfo, 
                             </svg>
                         </div>
                         <div className="font-light text-sm md:text-md">
-                            <span className="font-medium text-gray-500 text-sm md:text-lg">{hotelInfo?.hotelInfo?.address?.streetAddress}</span>
+                            <span className="font-medium text-gray-500 text-sm md:text-lg">{hotelInfo?.hotelInfo?.address?.streetAddress || hotelInfo?.hotelAddress}</span>
                         </div>
                     </div>
 
@@ -57,7 +55,9 @@ export default function DetailedPageHotelInformation({ nearByHotels, hotelInfo, 
                             </div>
                             <p className="font-bold text-black text-sm md:text-lg">About Accommodation</p>
                         </div>
-                        <p>{hotelInfo?.hotelDescription}</p>
+                        <p
+                            dangerouslySetInnerHTML={{ __html: hotelInfo?.hotelDescription }}
+                        />
                     </div>
                 </div>
             : <PriceComparisonSkeleton/>
@@ -68,9 +68,9 @@ export default function DetailedPageHotelInformation({ nearByHotels, hotelInfo, 
                 : <HotelPriceComparison specificHotel={specificHotel} specificHotelPriceComparison={specificHotelPriceComparison} payload={payload} />
                 }
             </div>
-            <div className="my-6">
+            {/* <div className="my-6">
                 <HotelRelatedInformation />
-            </div>
+            </div> */}
             <div className="my-6">
                 {(!hotelInfo || isFetchingHotelComments || !hotelComments)  
                 ? <ReviewsSkeleton/>
