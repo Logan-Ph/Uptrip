@@ -744,18 +744,14 @@ exports.getListFiltersTrip = listFilters => {
 			sceneType: "80"
 		},
 		{
+			filterId: "19|1777",
+			type: "19",
+			value: "1777",
+			subType: "1"
+		},
+		{
 			filterId: "29|1",
-			type: "29",
-			value: "1|1"
-		},
-		{
-			filterId: "29|2|8",
-			value: "2|8",
-			type: "29"
-		},
-		{
-			filterId: "29|3|12",
-			value: "3|12",
+			value: "1|2",
 			type: "29"
 		}
 	];

@@ -207,7 +207,7 @@ const tripGetHotelListURLPayload = (
 	listFilters,
 	href
 ) => {
-	let childInfoItems = ages.split(",").map(age => {
+	let childInfoItems = (ages || "").split(",").map(age => {
 		return {
 			age: parseInt(age),
 			meal: -1,

@@ -817,16 +817,15 @@ function AdvancedSearchHotel() {
         let payload = {
             checkin: checkin.replace(/-/g, '') ,
             checkout: checkout.replace(/-/g, ''),
-            city: autocompletePayload.city.geoCode || searchParams.get("city"),
-
-            resultType: autocompletePayload.resultType || searchParams.get("resultType"),
-            countryId: autocompletePayload.country.geoCode || searchParams.get("countryId"),
+            city: autocompletePayload?.city?.geoCode || searchParams.get("city"),
+            resultType: autocompletePayload?.resultType || searchParams.get("resultType"),
+            countryId: autocompletePayload?.country?.geoCode || searchParams.get("countryId"),
             districtId: 0 || searchParams.get("districtId"),
-            provinceId: autocompletePayload.province.geoCode || searchParams.get("provinceId"),
-            cityType: autocompletePayload.cityType || searchParams.get("cityType"),
-            latitude: autocompletePayload.coordinateInfos[3].latitude || searchParams.get("latitude"),
-            longitude: autocompletePayload.coordinateInfos[3].longitude || searchParams.get("longitude"),
-            searchCoordinate: autocompletePayload.coordinateInfos
+            provinceId: autocompletePayload?.province?.geoCode || searchParams.get("provinceId"),
+            cityType: autocompletePayload?.cityType || searchParams.get("cityType"),
+            latitude: autocompletePayload?.coordinateInfos[3]?.latitude || searchParams.get("latitude"),
+            longitude: autocompletePayload?.coordinateInfos[3]?.longitude || searchParams.get("longitude"),
+            searchCoordinate: autocompletePayload?.coordinateInfos
                 .map(
                     (info) =>
                         `${info.coordinateType}_${info.latitude}_${info.longitude}_${info.accuracy}`
@@ -840,13 +839,15 @@ function AdvancedSearchHotel() {
             listFilters: "17~1*17*1*2" || searchParams.get("listFilters"),
         };
 
+        console.log(payload.city);
+
         if (payload.resultType === "H") {
             payload = {
                 ...payload,
-                hotelName: autocompletePayload.resultWord,
-                searchValue: `${autocompletePayload.item.data.filterID}_${autocompletePayload.item.data.type}_${autocompletePayload.item.data.value}_${autocompletePayload.item.data.subType}`,
-                cityName: autocompletePayload.city.currentLocaleName,
-                preHotelIds: autocompletePayload.code
+                hotelName: autocompletePayload?.resultWord || searchParams.get("hotelName"),
+                searchValue: `${autocompletePayload?.item?.data?.filterID}_${autocompletePayload?.item?.data?.type}_${autocompletePayload?.item?.data?.value}_${autocompletePayload?.item?.data?.subType}` || searchParams.get("searchValue"),
+                cityName: autocompletePayload?.city?.currentLocaleName || searchParams.get("cityName"),
+                preHotelIds: autocompletePayload?.code || searchParams.get("preHotelIds")
             }
             navigate(
                 `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
@@ -854,7 +855,7 @@ function AdvancedSearchHotel() {
         } else {
             payload = {
                 ...payload,
-                cityName: autocompletePayload.resultWord,
+                cityName: autocompletePayload?.resultWord || searchParams.get("cityName"),
             };
             navigate(
                 `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
