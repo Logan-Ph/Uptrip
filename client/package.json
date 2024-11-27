@@ -23,6 +23,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
+    "client": "file:",
     "dayjs": "^1.11.10",
     "flowbite": "^2.3.0",
     "flowbite-datepicker": "^1.2.6",

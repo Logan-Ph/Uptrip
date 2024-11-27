@@ -215,8 +215,8 @@ function Reviews({ hotelComments, hotelInfo }) {
 
                                     <div className="relative mt-2 h-4">
                                         <div className="absolute border-4 border-gray-200 w-[350px] md:w-[400px] rounded-xl"></div>
-                                        <div className="absolute z-1 top-0 w-[316px] md:w-[384px] rounded-xl border-4 border-[#8DD3BB]" style={{
-                                            width: `${hotelInfo?.ratingsMap?.[key] * (windowWidth < 768 ? 70 : 80)}px`}}></div>
+                                        <div className="absolute z-1 top-0 w-[350px] md:w-[400px] rounded-xl border-4 border-[#8DD3BB]" style={{
+                                            width: `${hotelInfo?.ratingsMap?.[key] * (windowWidth < 768 ? 350 : 400) / 5}px`}}></div>
                                     </div>
                                 </div>
                             ))}

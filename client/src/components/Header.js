@@ -3,7 +3,7 @@ import NavBar from "./Navbar";
 import useHandleNavigate from "../utils/useHandleNavigate";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAttractionsAutocomplete, fetchTripAutoComplete, fetchFlightAutocomplete } from "../api/fetch";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import warningNotify from "../utils/warningNotify";
 
 export default function Header() {
@@ -67,11 +67,10 @@ export default function Header() {
                         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 rounded-tl-lg ${
-                                        tab === "stay"
+                                    className={`inline-block p-4 rounded-tl-lg ${tab === "stay"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("stay")}
                                 >
@@ -80,11 +79,10 @@ export default function Header() {
                             </li>
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 ${
-                                        tab === "flight"
+                                    className={`inline-block p-4 ${tab === "flight"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("flight")}
                                 >
@@ -93,11 +91,10 @@ export default function Header() {
                             </li>
                             <li className="" role="presentation">
                                 <button
-                                    className={`inline-block p-4 rounded-tr-lg ${
-                                        tab === "experience"
+                                    className={`inline-block p-4 rounded-tr-lg ${tab === "experience"
                                             ? "bg-white text-black"
                                             : "text-white bg-[#231F20]"
-                                    } `}
+                                        } `}
                                     type="button"
                                     onClick={() => setTab("experience")}
                                 >
@@ -237,12 +234,12 @@ function AdvancedSearchFlight() {
     const [toEdit, setToEdit] = useState(false);
     const [debouncedKeywordFrom, setDebouncedKeywordFrom] = useState(null)
     const [debouncedKeywordTo, setDebouncedKeywordTo] = useState(null)
-    const [startDate, setStartDate] = useState() 
+    const [startDate, setStartDate] = useState()
 
     useEffect(() => {
         if (numberOfAdult * 2 < numberOfChild) {
             setNumberOfChild(numberOfAdult * 2)
-        } 
+        }
         if (numberOfAdult < numberOfInfant) {
             setNumberOfInfant(numberOfAdult)
         }
@@ -294,17 +291,17 @@ function AdvancedSearchFlight() {
             return
         }
 
-        if (!to){
+        if (!to) {
             warningNotify("PLease select your destination")
             return
         }
 
-        if (!startDate){
+        if (!startDate) {
             warningNotify("Please select your departure date")
             return
         }
 
-        if (!toAutocomplete || !fromAutocomplete){
+        if (!toAutocomplete || !fromAutocomplete) {
             return
         }
 
@@ -324,7 +321,7 @@ function AdvancedSearchFlight() {
 
         setKeywordFrom()
         setKeywordTo()
-        
+
         navigate(
             `advanced-flight-search?ori=${payload.fromCity}&des=${payload.toCity}&from=${payload.from}&to=${payload.to}&adult=${payload.adult}&child=${payload.child}&infant=${payload.infant}&seatClass=${payload.seatClass}&year=${payload.year}&month=${payload.month}&day=${payload.day}`
         );
@@ -499,9 +496,8 @@ function AdvancedSearchFlight() {
                             {/* <!-- Dropdown menu --> */}
                             <div
                                 id="dropdown"
-                                className={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute w-full mt-2 ${
-                                    openMenu ? "" : "hidden"
-                                }`}
+                                className={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute w-full mt-2 ${openMenu ? "" : "hidden"
+                                    }`}
                             >
                                 <div
                                     className="py-2 text-sm text-gray-700 my-3 mx-5 space-y-4"
@@ -531,7 +527,7 @@ function AdvancedSearchFlight() {
                                                                     1 +
                                                                     numberOfChild +
                                                                     numberOfInfant <=
-                                                                6
+                                                                    6
                                                                     ? prev + 1
                                                                     : prev
                                                         );
@@ -595,8 +591,8 @@ function AdvancedSearchFlight() {
                                                             (prev) =>
                                                                 prev <
                                                                     numberOfAdult *
-                                                                        2 &&
-                                                                prev +
+                                                                    2 &&
+                                                                    prev +
                                                                     1 +
                                                                     numberOfAdult +
                                                                     numberOfInfant <=
@@ -664,7 +660,7 @@ function AdvancedSearchFlight() {
                                                             (prev) =>
                                                                 prev + 1 <=
                                                                     numberOfAdult &&
-                                                                prev +
+                                                                    prev +
                                                                     1 +
                                                                     numberOfChild +
                                                                     numberOfAdult <=
@@ -712,19 +708,19 @@ function AdvancedSearchFlight() {
                                     </div>
                                     {/* Choose seat class */}
                                     <div class="flex justify-between grow flex-wrap">
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("ECONOMY")}
                                         >
                                             Economy
                                         </div>
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("BUSINESS")}
                                         >
                                             Business
                                         </div>
-                                        <div 
+                                        <div
                                             className="p-3 bg-gray-200 border rounded-md font-semibold hover:bg-black hover:text-white cursor-pointer duration-300 grow m-2 text-center"
                                             onClick={() => setSeatClass("FIRST")}
                                         >
@@ -752,16 +748,17 @@ function AdvancedSearchFlight() {
 
 function AdvancedSearchHotel() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [keyword, setKeyword] = useState("");
     const [autocompletePayload, setAutocompletePayload] = useState();
     const [dropdown, setDropdown] = useState(false);
-    const [numberOfAdults, setNumberOfAdults] = useState(1);
-    const [numberOfChildren, setNumberOfChildren] = useState(0);
-    const [numberOfRooms, setNumberOfRooms] = useState(1);
-    const [childrenAges, setChildrenAges] = useState([]);
+    const [numberOfAdults, setNumberOfAdults] = useState(Number(searchParams.get("adult")) || 1);
+    const [numberOfChildren, setNumberOfChildren] = useState(Number(searchParams.get("children")) || 0);
+    const [numberOfRooms, setNumberOfRooms] = useState(Number(searchParams.get("crn")) || 1);
+    const [childrenAges, setChildrenAges] = useState(searchParams.get("ages")?.split(",") || []);
     const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
-    const [checkin, setCheckin] = useState()
-    const [checkout, setCheckout] = useState()
+    const [checkin, setCheckin] = useState(searchParams.get("checkin")?.slice(0, 4) + "-" + searchParams.get("checkin")?.slice(4, 6) + "-" + searchParams.get("checkin")?.slice(6));
+    const [checkout, setCheckout] = useState(searchParams.get("checkout")?.slice(0, 4) + "-" + searchParams.get("checkout")?.slice(4, 6) + "-" + searchParams.get("checkout")?.slice(6));
 
     const { data, isFetched } = useQuery({
         queryKey: ["quick-search", "hotels", debouncedKeyword],
@@ -784,69 +781,87 @@ function AdvancedSearchHotel() {
         setAutocompletePayload(null);
     }, [debouncedKeyword]);
 
+
+    const renderAgesString = (agesArray) => {
+        if (agesArray.length === 0) return ''; // Return an empty string if the array is empty
+
+        let agesString = '';
+        agesArray.forEach((age, index) => {
+            agesString += age;
+            if (index < agesArray.length - 1) {
+                agesString += ','; // Add a comma if it's not the last element
+            }
+        });
+
+        return agesString;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!autocompletePayload) {
+        if (!autocompletePayload && searchParams.get("resultType") === null) {
             warningNotify("Please select a location");
             return;
         }
 
-        if (!checkin){
+        if (!checkin && searchParams.get("checkin") === null) {
             warningNotify("Please select checkin date")
             return
         }
 
-        if (!checkout){
+        if (!checkout && searchParams.get("checkout") === null) {
             warningNotify("Please select checkout date")
             return
         }
 
         let payload = {
-            checkin: checkin.replace(/-/g, ''),
+            checkin: checkin.replace(/-/g, '') ,
             checkout: checkout.replace(/-/g, ''),
-            city: autocompletePayload.city.geoCode,
-
-            resultType: autocompletePayload.resultType,
-            countryId: autocompletePayload.country.geoCode,
-            districtId: 0,
-            provinceId: autocompletePayload.province.geoCode,
-            cityType: autocompletePayload.cityType,
-            latitude: autocompletePayload.coordinateInfos[3].latitude,
-            longitude: autocompletePayload.coordinateInfos[3].longitude,
-            searchCoordinate: autocompletePayload.coordinateInfos
+            city: autocompletePayload?.city?.geoCode || searchParams.get("city"),
+            resultType: autocompletePayload?.resultType || searchParams.get("resultType"),
+            countryId: autocompletePayload?.country?.geoCode || searchParams.get("countryId"),
+            districtId: 0 || searchParams.get("districtId"),
+            provinceId: autocompletePayload?.province?.geoCode || searchParams.get("provinceId"),
+            cityType: autocompletePayload?.cityType || searchParams.get("cityType"),
+            latitude: autocompletePayload?.coordinateInfos[3]?.latitude || searchParams.get("latitude"),
+            longitude: autocompletePayload?.coordinateInfos[3]?.longitude || searchParams.get("longitude"),
+            searchCoordinate: autocompletePayload?.coordinateInfos
                 .map(
                     (info) =>
                         `${info.coordinateType}_${info.latitude}_${info.longitude}_${info.accuracy}`
                 )
-                .join("|"),
-            crn: numberOfRooms,
-            adult: numberOfAdults,
-            children: numberOfChildren,
-            domestic: false,
-            listFilters: "17~1*17*1*2",
+                .join("|") || searchParams.get("searchCoordinate"),
+            crn: numberOfRooms || searchParams.get("crn"),
+            adult: numberOfAdults || searchParams.get("adult"),
+            children: numberOfChildren || searchParams.get("children"),
+            ages: childrenAges || searchParams.get("ages"),
+            domestic: false || searchParams.get("domestic"),
+            listFilters: "17~1*17*1*2" || searchParams.get("listFilters"),
         };
+
+        console.log(payload.city);
 
         if (payload.resultType === "H") {
             payload = {
                 ...payload,
-                hotelName: autocompletePayload.resultWord,
-                searchValue: `${autocompletePayload.item.data.filterID}_${autocompletePayload.item.data.type}_${autocompletePayload.item.data.value}_${autocompletePayload.item.data.subType}`,
-                cityName: autocompletePayload.city.currentLocaleName,
-                preHotelIds: autocompletePayload.code
+                hotelName: autocompletePayload?.resultWord || searchParams.get("hotelName"),
+                searchValue: `${autocompletePayload?.item?.data?.filterID}_${autocompletePayload?.item?.data?.type}_${autocompletePayload?.item?.data?.value}_${autocompletePayload?.item?.data?.subType}` || searchParams.get("searchValue"),
+                cityName: autocompletePayload?.city?.currentLocaleName || searchParams.get("cityName"),
+                preHotelIds: autocompletePayload?.code || searchParams.get("preHotelIds")
             }
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         } else {
             payload = {
                 ...payload,
-                cityName: autocompletePayload.resultWord,
+                cityName: autocompletePayload?.resultWord || searchParams.get("cityName"),
             };
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=VND&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         }
+        setDropdown(false)
     };
 
     return (
@@ -866,6 +881,7 @@ function AdvancedSearchHotel() {
                             className="h-[52px] w-full input  bg-white border md:border-none border-gray-300 ps-10 p-2.5 focus:ring-0 focus:ring-offset-0 focus:border-gray-300 focus:outline-none"
                             placeholder="Where are you going?"
                             value={autocompletePayload?.resultWord}
+                            defaultValue={searchParams.get("resultType") !== "H" ? searchParams.get("cityName") : searchParams.get("hotelName")}
                             onChange={(e) => setKeyword(e.target.value)}
                         />
                         <div className="relative z-40 drop-shadow-lg">
@@ -1117,9 +1133,8 @@ function AdvancedSearchHotel() {
                         {/* <!-- Dropdown menu --> */}
                         <div
                             id="dropdownDivider"
-                            class={`z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow ${
-                                dropdown ? "" : "hidden"
-                            }`}
+                            class={`z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow ${dropdown ? "" : "hidden"
+                                }`}
                         >
                             {/* Ask user to input room information */}
                             <div
@@ -1216,7 +1231,7 @@ function AdvancedSearchHotel() {
                                                 onClick={() =>
                                                     setNumberOfAdults((prev) =>
                                                         prev - 1 > 0 &&
-                                                        prev > numberOfRooms
+                                                            prev > numberOfRooms
                                                             ? prev - 1
                                                             : prev
                                                     )
@@ -1286,7 +1301,7 @@ function AdvancedSearchHotel() {
                                                                         prev.slice(
                                                                             0,
                                                                             prev.length -
-                                                                                1
+                                                                            1
                                                                         )
                                                                 );
                                                                 return prev - 1;
@@ -1319,7 +1334,7 @@ function AdvancedSearchHotel() {
                                                     setNumberOfChildren(
                                                         (prev) =>
                                                             prev <
-                                                            numberOfRooms * 6
+                                                                numberOfRooms * 6
                                                                 ? prev + 1
                                                                 : prev
                                                     )
