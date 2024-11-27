@@ -50,8 +50,7 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
         <>
 
             <div className='lg:w-3/4 flex items-center justify-between'>
-                <div className="font-bold text-md">Price</div>
-
+                <div className="font-bold text-md">Price (VND {value[0].toLocaleString("vi-VN")} - VND {value[1].toLocaleString("vi-VN")}+)</div>
                 {showPriceRange ? (
                     <ChevronUpIcon onClick={() => setPriceRange(!showPriceRange)} className="h-5 w-5 flex-shrink-0 text-gray-900 group-hover:text-gray-500 cursor-pointer ml-20" aria-hidden="true" />
                 ) : (
@@ -70,8 +69,7 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
                         valueLabelFormat={valueLabelFormat}
                         min={0}
                         max={priceMax}
-                        step={Math.round(priceMax/10)}
-                        color="dark"
+                        step={100000}
                     />
                 </div>
             )}
@@ -83,7 +81,10 @@ function DepartureTime({setDepartureTime}) {
     const [showPriceRang, setPriceRange] = useState(true);
     const [value, setValue] = useState([0, 24]);
 
-
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    
     const handleFilter = (event, newValue) => {
         setValue(newValue)
         setDepartureTime(value.map(v => v * 60)); // convert
@@ -101,7 +102,7 @@ function DepartureTime({setDepartureTime}) {
     return (
         <>
             <div className='lg:w-3/4 flex items-center justify-between'>
-                <div className="font-bold text-md">Departure Time</div>
+                <div className="font-bold text-md">Departure Time {value[0]}:00 - {value[1]}:00</div>
 
                 {showPriceRang ? (
                     <ChevronUpIcon onClick={() => setPriceRange(!showPriceRang)} className="h-5 w-5 flex-shrink-0 text-gray-900 group-hover:text-gray-500 cursor-pointer ml-20" aria-hidden="true" />
@@ -113,8 +114,9 @@ function DepartureTime({setDepartureTime}) {
             {showPriceRang && (
                 <div className='lg:w-3/4'>
                     <Slider
-                        getAriaLabel={() => 'Price range'}
+                        getAriaLabel={() => 'Departure time'}
                         value={value}
+                        onChange={handleChange}
                         onChangeCommitted={handleFilter}
                         valueLabelDisplay="auto" // Display the label on the slider thumb
                         valueLabelFormat={valueLabelFormat} // Format the label to show a dollar sign
@@ -132,8 +134,13 @@ function ArrivalTime({setArrivalTime}) {
     const [showPriceRang, setPriceRange] = useState(true);
     const [value, setValue] = useState([0, 24]);
 
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleFilter = (event, newValue) => {
+        setValue(newValue)
         setArrivalTime(value.map(v => v * 60));
     };
 
@@ -146,7 +153,7 @@ function ArrivalTime({setArrivalTime}) {
     return (
         <>
             <div className='lg:w-3/4 flex items-center justify-between'>
-                <div className="font-bold text-md">Arrival Time</div>
+                <div className="font-bold text-md">Arrival Time {value[0]}:00 - {value[1]}:00</div>
 
                 {showPriceRang ? (
                     <ChevronUpIcon onClick={() => setPriceRange(!showPriceRang)} className="h-5 w-5 flex-shrink-0 text-gray-900 group-hover:text-gray-500 cursor-pointer ml-20" aria-hidden="true" />
@@ -158,9 +165,10 @@ function ArrivalTime({setArrivalTime}) {
             {showPriceRang && (
                 <div className='lg:w-3/4'>
                     <Slider
-                        getAriaLabel={() => 'Price range'}
+                        getAriaLabel={() => 'Arrival time'}
                         value={value}
-                        onChangeCommitted={handleChange}
+                        onChange={handleChange}
+                        onChangeCommitted={handleFilter}
                         valueLabelDisplay="auto" // Display the label on the slider thumb
                         valueLabelFormat={valueLabelFormat} // Format the label to show a dollar sign
                         min={0}
