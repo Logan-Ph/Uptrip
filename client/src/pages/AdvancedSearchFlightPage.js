@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { fetchFlightAdvancedSearch, fetchTripComFlight, fetchBayDepFlight, fetchMyTripFlight } from "../api/fetch.js";
 import ScrollUpButton from "../components/ScrollUpButton.js";
 import { FlightSortOption } from "../components/FlightSortOption.js";
+import noFlight from "../components/images/no-results-found.png";
 import AdvancedFlightCard from "../components/AdvancedFlightCard.js"
 
 export default function AdvancedSearchFlightPage() {
@@ -126,7 +127,15 @@ export default function AdvancedSearchFlightPage() {
                                     <Suspense fallback={<ASearchSkeleton />}> 
                                         <AdvancedFlightCard from={searchParams.get("from")} to={searchParams.get("to")} flight={flight} tripComPrice={tripComPrice} myTripPrice={myTripPrice} bayDepPrice={bayDepPrice} tripComSuccess={tripCom.isSuccess} myTripSuccess={myTrip.isSuccess} bayDepSuccess={bayDep.isSuccess}/>
                                     </Suspense>)
-                                })}
+                                })
+                            }
+
+                            {
+                                agoda.isSuccess && agoda.data.flights.length === 0 &&
+                                <div className="flex justify-center items-center h-full">
+                                    <img src={noFlight} alt="no flight" className="w-full"/>
+                                </div>
+                            }
                         </div>
 
                     </div>

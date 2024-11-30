@@ -2337,6 +2337,10 @@ export function SavedFlightCard({ item, setSelectedItems, selectedItems }) {
                             <div className="text-gray-500">{item.from}</div>
                         </div>
                         <div className="flex flex-col">
+                            <div className="font-semibold">{item.departureTime.substring(0, 10)}</div>
+                            <div className="text-gray-500">Departure</div>
+                        </div>
+                        <div className="flex flex-col">
                             <div className="text-gray-500 pb-1 font-thin">
                                 {item.duration}
                             </div>
@@ -2344,6 +2348,10 @@ export function SavedFlightCard({ item, setSelectedItems, selectedItems }) {
                             <div className="text-gray-500 mt-1 font-thin">
                                 {item.flightNo.length === 1 ? "non-stop" : item.flightNo.length + 1 + "stop(s)"}
                             </div>
+                        </div>
+                        <div className="flex flex-col">
+                            <div className="font-semibold">{item.arrivalTime.substring(0, 10)}</div>
+                            <div className="text-gray-500">Arrival</div>
                         </div>
                         <div className="flex flex-col">
                             <div className="font-semibold">{item.arrivalTime.substring(11, 16)}</div>

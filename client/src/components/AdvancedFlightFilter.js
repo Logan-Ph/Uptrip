@@ -28,7 +28,7 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
         if (value[1] === 0) {
             setValue([0, priceMax]);
         }
-    }, [priceMax]); 
+    }, [priceMax, value]); 
     
 
     const handleChange = (event, newValue) => {
@@ -48,9 +48,8 @@ function PriceRange({priceMax, priceStep, setPriceFilter}) {
 
     return (
         <>
-
             <div className='lg:w-3/4 flex items-center justify-between'>
-                <div className="font-bold text-md">Price (VND {value[0].toLocaleString("vi-VN")} - VND {value[1].toLocaleString("vi-VN")}+)</div>
+                <div className="font-bold text-md">Price (VND {value[0]?.toLocaleString("vi-VN")} - VND {value[1]?.toLocaleString("vi-VN")}+)</div>
                 {showPriceRange ? (
                     <ChevronUpIcon onClick={() => setPriceRange(!showPriceRange)} className="h-5 w-5 flex-shrink-0 text-gray-900 group-hover:text-gray-500 cursor-pointer ml-20" aria-hidden="true" />
                 ) : (
