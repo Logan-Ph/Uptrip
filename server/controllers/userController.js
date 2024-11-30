@@ -334,6 +334,7 @@ exports.advancedSearchHotels = async (req, res) => {
             adult,
             children, // children=3&ages=0,15,4 -> decoded version
             domestic,
+            ages,
             listFilters,
         } = req.body;
 
@@ -366,6 +367,9 @@ exports.advancedSearchHotels = async (req, res) => {
             // crn: 1, // number of rooms
             crn: Number(crn),
 
+            // ages: ages,
+            ages: ages,
+
             // adult: 1,
             adult: Number(adult),
 
@@ -380,7 +384,7 @@ exports.advancedSearchHotels = async (req, res) => {
             curr: "VND",
         };
 
-        const href = `https://us.trip.com/hotels/list?city=${queryParam.city}&cityName=${queryParam.cityName}&provinceId=${queryParam.provinceId}&countryId=${queryParam.countryId}&districtId=${queryParam.districtId}&checkin=${queryParam.checkin}&checkout=${queryParam.checkout}&barCurr=${queryParam.barCurr}&crn=${queryParam.crn}&adult=${queryParam.adult}&children=${queryParam.children}&searchBoxArg=${queryParam.searchBoxArg}&travelPurpose=${queryParam.travelPurpose}&ctm_ref=${queryParam.ctm_ref}&domestic=${queryParam.domestic}&listFilters=${queryParam.listFilters}&locale=${queryParam.locale}&curr=${queryParam.curr}`;
+        const href = `https://us.trip.com/hotels/list?city=${queryParam.city}&cityName=${queryParam.cityName}&provinceId=${queryParam.provinceId}&countryId=${queryParam.countryId}&districtId=${queryParam.districtId}&checkin=${queryParam.checkin}&checkout=${queryParam.checkout}&barCurr=${queryParam.barCurr}&crn=${queryParam.crn}&adult=${queryParam.adult}&children=${queryParam.children}&ages=${queryParam.ages}&searchBoxArg=${queryParam.searchBoxArg}&travelPurpose=${queryParam.travelPurpose}&ctm_ref=${queryParam.ctm_ref}&domestic=${queryParam.domestic}&listFilters=${queryParam.listFilters}&locale=${queryParam.locale}&curr=${queryParam.curr}`;
         if (preHotelIds) preHotelIds = preHotelIds.map(Number);
 
         const payload = tripGetHotelListURLPayload(
@@ -393,6 +397,7 @@ exports.advancedSearchHotels = async (req, res) => {
             queryParam.districtId || 0,
             queryParam.cityType === "OVERSEA" ? true : false,
             queryParam.crn || 1,
+            queryParam.ages,
             queryParam.latitude,
             queryParam.longitude,
             queryParam.listFilters,
@@ -402,6 +407,10 @@ exports.advancedSearchHotels = async (req, res) => {
         const response = await axios.post(tripGetHotelListIdURL, payload, {
             headers: headers,
         });
+
+        if (response.data.ErrorCode === 400) {
+            return res.status(500).json({ message: response.data.Message });
+        }
 
         const hotelName = response.data.hotelList.map(
             (hotel) => hotel.hotelBasicInfo.hotelName
@@ -417,7 +426,6 @@ exports.advancedSearchHotels = async (req, res) => {
             preHotelIds,
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).json(error);
     }
 };
@@ -627,7 +635,6 @@ exports.priceComparisonHotels = async (req, res) => {
 
         return res.status(200).json(combinedResults);
     } catch (error) {
-        console.log("Error in priceComparisonHotels:", error);
         return res
             .status(500)
             .json({ message: "Internal Server Error", error: error });
@@ -731,7 +738,6 @@ exports.advancedSearchSpecificHotelTrip = async (req, res) => {
         };
         res.status(200).json({ matchHotel });
     } catch (er) {
-        console.log(er)
         return res.status(500).json(error);
     }
 };
@@ -848,7 +854,6 @@ exports.advancedSearchHotelBooking = async (req, res) => {
         const hotel = searchQueriesArray[1]["results"][0]; // select the name by ".displayName.text"
         return res.status(200).json({ price: hotel.blocks, pageName: hotel.basicPropertyData.pageName });
     } catch (error) {
-        console.log(error)
         return res.status(500).json(error);
     }
 };
@@ -1360,7 +1365,7 @@ exports.hotelInfo = async (req, res) => {
         const response = await axios.get(hotelInfoURL, { params: payload, headers: headers })
         const html = response.data;
         const $ = cheerio.load(html);
-        const hotelDescription = $(".hotelOverview_hotelOverview-container__XwS4Z").text();
+        const hotelDescription = $(".hotelOverview_hotelOverview-container__XwS4Z").html();
         const ldJsonScript = $('script[type="application/ld+json"]');
         const hotelReviewScore = $(
             ".reviewScores_reviewCategoryScores-itemHead__4HXHu"
@@ -1377,7 +1382,8 @@ exports.hotelInfo = async (req, res) => {
             ratingsMap[key] = value;
         });
         const hotelInfo = JSON.parse(ldJsonScript.html());
-        return res.status(200).json({ hotelInfo, hotelDescription, ratingsMap, hotelReviewComment })
+        const hotelAddress = $(".headInit_headInit-address_text__D_Atv").text();
+        return res.status(200).json({ hotelInfo, hotelDescription, ratingsMap, hotelReviewComment, hotelAddress })
     } catch (err) {
         console.log(err)
         return res.status(500).json(err)

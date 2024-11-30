@@ -78,7 +78,6 @@ function PriceRange({listFilter, payload, listSort}) {
                     min={0}
                     max={4200000}
                     step={100000}
-                    color = "dark"
                 />
             </div>
         )}

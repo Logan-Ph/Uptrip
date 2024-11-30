@@ -93,12 +93,12 @@ function AdvancedSearchFlight({ setTab }) {
     const [toEdit, setToEdit] = useState(true);
     const [debouncedKeywordFrom, setDebouncedKeywordFrom] = useState(null)
     const [debouncedKeywordTo, setDebouncedKeywordTo] = useState(null)
-    const [startDate, setStartDate] = useState() 
+    const [startDate, setStartDate] = useState()
 
     useEffect(() => {
         if (numberOfAdult * 2 < numberOfChild) {
             setNumberOfChild(numberOfAdult * 2)
-        } 
+        }
         if (numberOfAdult < numberOfInfant) {
             setNumberOfInfant(numberOfAdult)
         }
@@ -143,18 +143,18 @@ function AdvancedSearchFlight({ setTab }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        if (!from.airportCode){
+
+        if (!from.airportCode) {
             warningNotify("Please select your origin")
             return
         }
 
-        if (!to.airportCode){
+        if (!to.airportCode) {
             warningNotify("Please select your destination")
             return
         }
 
-        if (!startDate){
+        if (!startDate) {
             warningNotify("Please select your departure date")
             return
         }
@@ -397,9 +397,8 @@ function AdvancedSearchFlight({ setTab }) {
                                 {/* <!-- Dropdown menu --> */}
                                 <div
                                     id="dropdown"
-                                    class={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow w-full absolute mt-[1.5px] ${
-                                        openMenu ? "" : "hidden"
-                                    }`}
+                                    class={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow w-full absolute mt-[1.5px] ${openMenu ? "" : "hidden"
+                                        }`}
                                 >
                                     <div
                                         class="py-2 text-sm text-gray-700 my-3 mx-5 space-y-4"
@@ -429,7 +428,7 @@ function AdvancedSearchFlight({ setTab }) {
                                                                 (prev) =>
                                                                     prev - 1 > 0
                                                                         ? prev -
-                                                                          1
+                                                                        1
                                                                         : 1
                                                             )
                                                         }
@@ -459,9 +458,9 @@ function AdvancedSearchFlight({ setTab }) {
                                                                         1 +
                                                                         numberOfChild +
                                                                         numberOfInfant <=
-                                                                    6
+                                                                        6
                                                                         ? prev +
-                                                                          1
+                                                                        1
                                                                         : prev
                                                             )
                                                         }
@@ -496,9 +495,9 @@ function AdvancedSearchFlight({ setTab }) {
                                                             setNumberOfChild(
                                                                 (prev) =>
                                                                     prev - 1 >=
-                                                                    0
+                                                                        0
                                                                         ? prev -
-                                                                          1
+                                                                        1
                                                                         : 0
                                                             )
                                                         }
@@ -526,14 +525,14 @@ function AdvancedSearchFlight({ setTab }) {
                                                                 (prev) =>
                                                                     prev <
                                                                         numberOfAdult *
-                                                                            2 &&
-                                                                    prev +
+                                                                        2 &&
+                                                                        prev +
                                                                         1 +
                                                                         numberOfAdult +
                                                                         numberOfInfant <=
                                                                         6
                                                                         ? prev +
-                                                                          1
+                                                                        1
                                                                         : prev
                                                             )
                                                         }
@@ -568,9 +567,9 @@ function AdvancedSearchFlight({ setTab }) {
                                                             setNumberOfInfant(
                                                                 (prev) =>
                                                                     prev - 1 >=
-                                                                    0
+                                                                        0
                                                                         ? prev -
-                                                                          1
+                                                                        1
                                                                         : prev
                                                             )
                                                         }
@@ -598,13 +597,13 @@ function AdvancedSearchFlight({ setTab }) {
                                                                 (prev) =>
                                                                     prev + 1 <=
                                                                         numberOfAdult &&
-                                                                    prev +
+                                                                        prev +
                                                                         1 +
                                                                         numberOfChild +
                                                                         numberOfAdult <=
                                                                         6
                                                                         ? prev +
-                                                                          1
+                                                                        1
                                                                         : prev
                                                             )
                                                         }
@@ -780,6 +779,20 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
     const [checkin, setCheckin] = useState()
     const [checkout, setCheckout] = useState()
 
+    const renderAgesString = (agesArray) => {
+        if (agesArray.length === 0) return ''; // Return an empty string if the array is empty
+
+        let agesString = '';
+        agesArray.forEach((age, index) => {
+            agesString += age;
+            if (index < agesArray.length - 1) {
+                agesString += ','; // Add a comma if it's not the last element
+            }
+        });
+
+        return agesString;
+    };
+
     const { data, isFetched } = useQuery({
         queryKey: ["advanced-search", "hotels", debouncedKeyword],
         queryFn: () => fetchTripAutoComplete(debouncedKeyword),
@@ -816,12 +829,12 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
             return;
         }
 
-        if (!checkin){
+        if (!checkin) {
             warningNotify("Please select checkin date")
             return
         }
 
-        if (!checkout){
+        if (!checkout) {
             warningNotify("Please select checkout date")
             return
         }
@@ -846,6 +859,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
             crn: numberOfRooms,
             adult: numberOfAdults,
             children: numberOfChildren,
+            ages:childrenAges,
             domestic: false,
             listFilters: "17~1*17*1*2",
         };
@@ -859,7 +873,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                 preHotelIds: autocompletePayload.code,
             };
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=USD&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&hotelId=${autocompletePayload.code}&city=${payload.city}&cityName=${payload.cityName}&hotelName=${payload.hotelName}&searchValue=${payload.searchValue}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=USD&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&preHotelIds=${payload.preHotelIds}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         } else {
             payload = {
@@ -867,9 +881,10 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                 cityName: autocompletePayload.resultWord,
             };
             navigate(
-                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=USD&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
+                `/advanced-hotel-search/?resultType=${payload.resultType}&city=${payload.city}&cityName=${payload.cityName}&provinceId=${payload.provinceId}&countryId=${payload.countryId}&districtId=${payload.districtId}&checkin=${payload.checkin}&checkout=${payload.checkout}&barCurr=USD&cityType=${payload.cityType}&latitude=${payload.latitude}&longitude=${payload.longitude}&searchCoordinate=${payload.searchCoordinate}&crn=${payload.crn}&adult=${payload.adult}&children=${payload.children}&ages=${renderAgesString(payload.ages)}&listFilters=${payload.listFilters}&domestic=${payload.domestic}`
             );
         }
+        setDropdown(false)
     };
 
     return (
@@ -915,7 +930,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                                                 {data?.keyWordSearchResults?.map(
                                                     (element) => {
                                                         switch (
-                                                            element.resultType
+                                                        element.resultType
                                                         ) {
                                                             case "H":
                                                                 return (
@@ -1167,9 +1182,8 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                             {/* <!-- Dropdown menu --> */}
                             <div
                                 id="dropdownDivider"
-                                class={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute mt-[1.5px] ${
-                                    dropdown ? "block" : "hidden"
-                                }`}
+                                class={`z-10 bg-white divide-y divide-gray-100 rounded-b-lg shadow absolute mt-[1.5px] ${dropdown ? "block" : "hidden"
+                                    }`}
                             >
                                 {/* Ask user to input room information */}
                                 <div
@@ -1270,7 +1284,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                                                         setNumberOfAdults(
                                                             (prev) =>
                                                                 prev - 1 > 0 &&
-                                                                prev >
+                                                                    prev >
                                                                     numberOfRooms
                                                                     ? prev - 1
                                                                     : prev
@@ -1343,7 +1357,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                                                                             prev.slice(
                                                                                 0,
                                                                                 prev.length -
-                                                                                    1
+                                                                                1
                                                                             )
                                                                     );
                                                                     return (
@@ -1378,7 +1392,7 @@ function AdvancedSearchStay({ setTab, setKeyword, keyword }) {
                                                         setNumberOfChildren(
                                                             (prev) =>
                                                                 prev <
-                                                                numberOfRooms *
+                                                                    numberOfRooms *
                                                                     6
                                                                     ? prev + 1
                                                                     : prev

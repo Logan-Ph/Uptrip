@@ -13,7 +13,10 @@ export function SortOption({payload, listSort, listFilter}) {
     const updateFiltersAndNavigate = (filters) => {
         listSort.current = filters;
         let listFilters = `${listSort.current},${listFilter.current}`
-        const url = `/advanced-hotel-search/?resultType=${payload?.resultType}&city=${payload?.city}&cityName=${payload?.cityName}&provinceId=${payload?.provinceId}&countryId=${payload?.countryId}&districtId=${payload?.districtId}&checkin=${payload?.checkin}&checkout=${payload?.checkout}&barCurr=USD&cityType=${payload?.cityType}&latitude=${payload?.latitude}&longitude=${payload?.longitude}&searchCoordinate=${payload?.searchCoordinate}&crn=${payload?.crn}&adult=${payload?.adult}&children=${payload?.children}&listFilters=${listFilters}&domestic=${payload?.domestic}`;
+        let url = `/advanced-hotel-search/?resultType=${payload?.resultType}&city=${payload?.city}&cityName=${payload?.cityName}&provinceId=${payload?.provinceId}&countryId=${payload?.countryId}&districtId=${payload?.districtId}&checkin=${payload?.checkin}&checkout=${payload?.checkout}&barCurr=USD&cityType=${payload?.cityType}&latitude=${payload?.latitude}&longitude=${payload?.longitude}&searchCoordinate=${payload?.searchCoordinate}&crn=${payload?.crn}&adult=${payload?.adult}&children=${payload?.children}&listFilters=${listFilters}&domestic=${payload?.domestic}`;
+        if (payload.hotelId) {
+            url = `/advanced-hotel-search/?resultType=${payload?.resultType}&hotelId=${payload?.hotelId}&city=${payload?.city}&cityName=${payload?.cityName}&provinceId=${payload?.provinceId}&countryId=${payload?.countryId}&districtId=${payload?.districtId}&checkin=${payload?.checkin}&checkout=${payload?.checkout}&barCurr=USD&cityType=${payload?.cityType}&latitude=${payload?.latitude}&longitude=${payload?.longitude}&searchCoordinate=${payload?.searchCoordinate}&crn=${payload?.crn}&adult=${payload?.adult}&children=${payload?.children}&listFilters=${listFilters}&domestic=${payload?.domestic}`;
+        }
         navigate(url);
     };
 
@@ -43,11 +46,9 @@ export function SortOption({payload, listSort, listFilter}) {
                         <Menu.Item>
                             {({ active }) => (
                                 <Link
-                                    onClick={() => updateFiltersAndNavigate(null)}
+                                    onClick={() => updateFiltersAndNavigate("17~1*17*1*2")}
                                     className={classNames(
-                                        active
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-gray-700",
+                                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                                         "block px-4 py-2 text-sm"
                                     )}
                                 >

@@ -1,3 +1,4 @@
+import UnderMaintenance from "../components/images/under-maintenance.png";
 import { SortOption } from "../components/SortOption";
 import { AdvancedHotelFilter } from "../components/AdvancedHotelFilter";
 import {useInView} from "react-intersection-observer"
@@ -58,6 +59,7 @@ export default function AdvancedSearchHotelPage() {
         crn: searchParams.get("crn"),
         adult: searchParams.get("adult"),
         children: searchParams.get("children"),
+        ages: searchParams.get("ages"),
         domestic: searchParams.get("domestic"),
         preHotelIds: searchParams.getAll("preHotelIds"),
         listFilters: `${listSort.current},${listFilter.current}`,
@@ -66,7 +68,7 @@ export default function AdvancedSearchHotelPage() {
     const filterOptions = useQuery({
         queryKey: ["get-app-config"],
         queryFn: getAppConfig,
-        retry: false,
+        
         refetchOnWindowFocus: false,
     });
 
@@ -74,11 +76,11 @@ export default function AdvancedSearchHotelPage() {
         data: specificHotel,
         status: specificHotelStatus,
     } = useQuery({
-        queryKey: ["advanced-search-specific"],
+        queryKey: ["advanced-search-specific", payload.hotelId], // Updated to include hotelId
         queryFn: () => fetchSpecificHotel(payload),
-        retry: false,
+        
         refetchOnWindowFocus: false,
-        enabled: !!(payload.resultType === "H"),
+        enabled: !!(payload.resultType === "H" && payload.hotelId), // Ensure hotelId is present
     });
 
     const {
@@ -90,11 +92,10 @@ export default function AdvancedSearchHotelPage() {
         queryKey: ["advanced-search", "hotels", payload],
         queryFn: ({ pageParam = payload }) =>
             fetchHotelAdvancedSearch(pageParam),
-        retry: false,
         refetchOnWindowFocus: false,
         getNextPageParam: (lastPage, allPages) => {
             const lastPageIds = lastPage.preHotelIds;
-            if (lastPageIds) {
+            if (lastPageIds && lastPageIds.length > 0) { // Check if lastPageIds is not empty
                 const accumulatedIds = allPages.reduce((acc, page) => {
                     return acc.concat(page.preHotelIds || []);
                 }, []);
@@ -106,6 +107,8 @@ export default function AdvancedSearchHotelPage() {
                     ],
                 };
             }
+
+            // Return undefined if there are no more pages
             return undefined;
         },
     });
@@ -113,7 +116,7 @@ export default function AdvancedSearchHotelPage() {
     const getSpecificHotelPriceComparison = useQuery({
         queryKey: ["hotel-price-comparison", specificHotel],
         queryFn: () => fetchHotelPriceComparison({ ...payload, hotelNames: [specificHotel.matchHotel.name] }),
-        retry: false,
+        
         refetchOnWindowFocus: false,
         enabled: !!(payload.resultType === "H"),
     });
@@ -127,7 +130,7 @@ export default function AdvancedSearchHotelPage() {
     const getHotelPriceComparison = useQuery({
         queryKey: ["hotel-price-comparison", hotelNames],
         queryFn: () => fetchHotelPriceComparison({ ...payload, hotelNames }),
-        retry: false,
+        
         refetchOnWindowFocus: false,
         enabled: !!(hotelNames?.length > 0),
     });
@@ -152,7 +155,6 @@ export default function AdvancedSearchHotelPage() {
     }, [inView, hotelListLoading, fetchNextPage, getHotelPriceComparison.isLoading, getHotelPriceComparison.isFetching])
 
     return (
-
         <>
             <div className="bg-[#FAFBFC] md:p-10">
                 <section className="mx-auto max-w-8xl md:px-6 md:py-6 max-md:p-2 ">
@@ -170,76 +172,41 @@ export default function AdvancedSearchHotelPage() {
                             <div className="lg:absolute inset-y-0 right-0 w-px bg-gray-500 hidden lg:block mr-10"></div>
                         </div>
 
-                        <div className="col-span-2">
-                            <div className="flex items-center justify-between max-md:mt-5">
-                                <div className="w-1/2 md:mt-0 items-center">
-                                    <p className="text-sm md:text-lg">
-                                        Showing properties found in{" "}
-                                        <span className="font-bold text-sm md:text-lg text-wrap md:text-nowrap text-[#EF4040]">
-                                            {payload.cityName}
-                                        </span>
-                                    </p>
+                        <div className="col-span-2 max-md:mx-3">
+                            {hotelListStatus !== "error" && (
+                                <div className="flex items-center justify-between max-md:mt-5">
+                                    <div className="w-1/2 md:mt-0 items-center">
+                                        <p className="text-sm md:text-lg">
+                                            Showing properties found in{" "}
+                                            <span className="font-bold text-sm md:text-lg text-wrap md:text-nowrap text-[#EF4040]">
+                                                {payload.cityName}
+                                            </span>
+                                        </p>
+                                    </div>
+                                
+                                    <div>
+                                        <SortOption
+                                            payload={payload}
+                                            listSort={listSort}
+                                            listFilter={listFilter}
+                                        />
+                                    </div>
                                 </div>
+                            )}
 
-                                <div>
-                                    <SortOption
+                            {specificHotelStatus === "success" && payload.hotelId && (
+                                <>
+                                    <AdvancedHotel
                                         payload={payload}
-                                        listSort={listSort}
-                                        listFilter={listFilter}
+                                        specificHotel={specificHotel}
+                                        getSpecificHotelPriceComparison={getSpecificHotelPriceComparison}
                                     />
-                                </div>
-                            </div>
-                            {specificHotelStatus === "success" && payload.hotelId &&
-                                (() => {
-                                    const priceData =
-                                        getSpecificHotelPriceComparison.isSuccess
-                                            ? getSpecificHotelPriceComparison.data[0]
-                                            : null;
-                                    const agodaPrice = priceData?.agodaPrice?.price
-                                        ? Math.round(
-                                              priceData.agodaPrice?.price?.[0]?.price
-                                                  ?.perRoomPerNight?.exclusive
-                                                  ?.display
-                                          ).toLocaleString("vi-VN")
-                                        : null;
-                                    const bookingPrice = priceData?.bookingPrice
-                                        ? Math.round(
-                                              priceData.bookingPrice?.price?.reduce(
-                                                  (acc, curr) =>
-                                                      acc +
-                                                      Number(
-                                                          curr.finalPrice.amount
-                                                      ),
-                                                  0
-                                              ) /
-                                                  (Number(payload.adult) *
-                                                      Number(
-                                                          daysBetween(
-                                                              payload.checkin,
-                                                              payload.checkout
-                                                          )
-                                                      ))
-                                          ).toLocaleString("vi-VN")
-                                        : null;
-                                    return (
-                                        <Suspense
-                                            fallback={<ASearchSkeleton />}
-                                        >
-                                            <AdvancedHotelCardLazy
-                                                payload={payload}
-                                                hotel={specificHotel.matchHotel}
-                                                agodaPrice={agodaPrice}
-                                                bookingPrice={bookingPrice}
-                                                isSpecific={true}
-                                                priceData={priceData}
-                                                isSuccess={
-                                                    getSpecificHotelPriceComparison.isSuccess
-                                                }
-                                            />
-                                        </Suspense>
-                                    );
-                                })()}
-
+                                    <div className="text-sm md:text-lg md:mt-[30px]">
+                                        You may also like: 
+                                    </div>
+                                </>
+                            )}
+                            
                             {hotelListStatus === "success" &&
                                 hotelList.pages.map((page, pageIndex) => {
                                     return page.hotelList.map(
@@ -250,8 +217,7 @@ export default function AdvancedSearchHotelPage() {
                                                     ? Math.round(hotelPriceInfo.agodaPrice?.price?.[0]?.price?.perRoomPerNight?.exclusive?.display).toLocaleString("vi-VN")
                                                     : null;
                                             const bookingPrice = hotelPriceInfo?.bookingPrice?.price    
-                                                    ? Math.round(hotelPriceInfo.bookingPrice?.price?.reduce((acc, curr) => acc + Number(curr.finalPrice.amount), 0) /
-                                                        (Number(payload.adult) *
+                                                    ? Math.round(hotelPriceInfo.bookingPrice?.price?.reduce((acc, curr) => acc + Number(curr.finalPrice.amount), 0) / (Number(payload.adult) *
                                                         Number(daysBetween(payload.checkin, payload.checkout)))
                                                         ).toLocaleString("vi-VN")
                                                     : null;
@@ -271,8 +237,11 @@ export default function AdvancedSearchHotelPage() {
                                                 </Suspense>
                                             );
                                         });
-                                })}
-                            {(hotelListLoading ) && (
+                            })}
+                            {hotelListStatus === "error" && (
+                                <img src={UnderMaintenance} alt="error" className="w-full h-full object-contain" />
+                            )}
+                            {(hotelListLoading) && (
                                 <>
                                     <ASearchSkeleton />
                                     <ASearchSkeleton />
@@ -281,10 +250,75 @@ export default function AdvancedSearchHotelPage() {
                             )}
                         </div>
                     </div>
-                    <div ref={ref}/>
+                    {hotelListStatus === "success" &&
+                        <div ref={ref}/>
+                    }
+                    
                 </section>
                 <ScrollUpButton />
             </div>
         </>
     );
+}
+
+function AdvancedHotel({payload, specificHotel, getSpecificHotelPriceComparison}) {
+    const daysBetween = (checkin, checkout) =>
+        (new Date(
+            checkout.slice(0, 4),
+            checkout.slice(4, 6) - 1,
+            checkout.slice(6)
+        ) -
+            new Date(
+                checkin.slice(0, 4),
+                checkin.slice(4, 6) - 1,
+                checkin.slice(6)
+            )) /
+        (1000 * 60 * 60 * 24);
+
+    const priceData =
+        getSpecificHotelPriceComparison.isSuccess
+            ? getSpecificHotelPriceComparison.data[0]
+            : null;
+    const agodaPrice = priceData?.agodaPrice?.price
+        ? Math.round(
+            priceData.agodaPrice?.price?.[0]?.price
+                ?.perRoomPerNight?.exclusive
+                ?.display
+        ).toLocaleString("vi-VN")
+        : null;
+    const bookingPrice = priceData?.bookingPrice
+        ? Math.round(
+            priceData.bookingPrice?.price?.reduce(
+                (acc, curr) =>
+                    acc +
+                    Number(
+                        curr.finalPrice.amount
+                    ),
+                0
+            ) / (Number(payload.adult) *
+                Number(
+                    daysBetween(
+                        payload.checkin,
+                        payload.checkout
+                    )
+                ))
+        ).toLocaleString("vi-VN")
+        : null;
+        return (
+            <Suspense
+                fallback={<ASearchSkeleton />}
+            >
+                <AdvancedHotelCardLazy
+                    payload={payload}
+                    hotel={specificHotel.matchHotel}
+                    agodaPrice={agodaPrice}
+                    bookingPrice={bookingPrice}
+                    isSpecific={true}
+                    priceData={priceData}
+                    isSuccess={
+                        getSpecificHotelPriceComparison.isSuccess
+                    }
+                />
+            </Suspense>
+        );
 }
