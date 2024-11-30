@@ -119,6 +119,8 @@ export default function AdvancedSearchFlightPage() {
                             }
 
                             {agoda.isSuccess &&
+                                // agoda.data.flights.length > 0 
+                                // ?
                                 agoda.data.flights.map((flight) => {
                                     const tripComPrice = tripCom.isSuccess && tripCom.data.find(item => JSON.stringify(item.flightNo) === JSON.stringify(flight.flightNo)) ? Math.round(tripCom.data.find(item => JSON.stringify(item.flightNo) === JSON.stringify(flight.flightNo)).price) : null
                                     const myTripPrice = myTrip.isSuccess && myTrip.data.find(item => JSON.stringify(item.flightNo) === JSON.stringify(flight.flightNo)) ? Math.round(myTrip.data.find(item => JSON.stringify(item.flightNo) === JSON.stringify(flight.flightNo)).price) : null
@@ -126,15 +128,12 @@ export default function AdvancedSearchFlightPage() {
                                     return (
                                     <Suspense fallback={<ASearchSkeleton />}> 
                                         <AdvancedFlightCard from={searchParams.get("from")} to={searchParams.get("to")} flight={flight} tripComPrice={tripComPrice} myTripPrice={myTripPrice} bayDepPrice={bayDepPrice} tripComSuccess={tripCom.isSuccess} myTripSuccess={myTrip.isSuccess} bayDepSuccess={bayDep.isSuccess}/>
-                                    </Suspense>)
-                                })
-                            }
-
-                            {
-                                agoda.isSuccess && agoda.data.flights.length === 0 &&
-                                <div className="flex justify-center items-center h-full">
-                                    <img src={noFlight} alt="no flight" className="w-full"/>
-                                </div>
+                                        </Suspense>)
+                                    })
+                                // :
+                                // <div className="flex justify-center items-center h-full">
+                                //     <img src={noFlight} alt="no flight" className="w-full"/>
+                                // </div>
                             }
                         </div>
 
