@@ -957,21 +957,19 @@ exports.getTripComFlight = async (req, res) => {
         let payload = tripComGetFlightPayload(req.body)
         const response = await axios.post(url, payload, {
             headers: {
-                "User-Agent":
-			    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0",
                 "X-Ibu-Flt-Currency": "VND",
                 "X-Ibu-Flt-Language": "en",
                 "X-Ibu-Flt-Locale": "en-US",
                 "Accept-Language": "en-US,en;q=0.9,vi;q=0.8",
-                DNT: 1,
-                "Sec-Ch-Ua":
-                    '"Microsoft Edge";v="125", "Chromium";v="125", "Not(A:Brand";v="24"',
-                "Sec-Ch-Ua-Mobile": '"?0"',
+                "DNT": 1,
+                "Sec-Ch-Ua": '"Not A(Brand";v="8", "Chromium";v="132", "Microsoft Edge";v="132"',
+                "Sec-Ch-Ua-Mobile": '?0',
                 "Sec-Ch-Ua-Platform": '"Windows"',
                 Origin: "https://us.trip.com"
             }
         })
-        for (const item of response.data.data.flightListSearch.flightProductList) {
+        for (const item of response?.data?.data?.flightListSearch?.flightProductList) {
             const flightNo = []
             const airline = []
             for (const flight of item.segmentList[0].flightList) {
